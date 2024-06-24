@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+  previewFeatures = ["omitApi"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  userId          String    @id @default(auto()) @map("_id") @db.ObjectId
+  email           String    @unique
+  username        String    @unique
+  password        String    @db.String
+  sendto          Conversation[] @relation(name: "initiator")
+  receivefrom     Conversation[] @relation(name: "recipient")
+  messages        Message[]
+
+  @@index([email(sort: Asc)], map: "email_asc")
+} 
+
+model Conversation {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  initiatorId     String    @unique
+  initator        Users     @relation(name: "initiator", fields: [initiatorId], references: [username])
+  recipientId     String    @unique
+  recipient       Users     @relation(name: "recipient", fields: [recipientId], references: [username])
+  messages        Message[]
+}
+
+model Message {
+  id              String       @id @default(auto()) @map("_id") @db.ObjectId
+  cid             String       @db.ObjectId
+  conversation    Conversation @relation(fields: [cid], references: [id])
+  senderId        String       @unique
+  sender          Users        @relation(fields: [senderId], references: [username])
+  text            String       @db.String
+  timestamp       DateTime     @default(now())
+  messageStatus   Status       @default(unread)
+
+  @@index([timestamp(sort: Desc)], map: "timestamp_desc")
+}
+
+enum Status {
+  read
+  unread
+}
