@@ -4,7 +4,7 @@
   },
   "compilerOptions": {
     /* Language and Environment */
-    "target": "ES2021",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */                               
+    "target": "ES2017",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */                               
     /* Modules */
     "module": "CommonJS",                                /* Specify what module code is generated. */
     "rootDir": "./",                                     /* Specify the root folder within your source files. */
@@ -17,9 +17,10 @@
     "declaration": true,
     "declarationMap": true,
     "resolveJsonModule": true,
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"]
     }
   },
-  "exclude": ["node_modules", "dist", " tsconfig.json", "enmav.config.json", "prisma"]
+  "exclude": ["node_modules", "dist", "tsconfig.json", "enmav.config.json"]
 }

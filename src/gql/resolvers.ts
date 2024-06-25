@@ -1,5 +1,6 @@
 import GraphQLJSON from "graphql-type-json";
 import { GraphQLScalarType, Kind } from "graphql";
+import { sendText } from "@/worker/publisher";
 
 const dateScalar = new GraphQLScalarType({
     name: 'Date',
@@ -26,18 +27,18 @@ const dateScalar = new GraphQLScalarType({
     },
   });
 
-export const resolvers = {
+const resolvers = {
     JSON: GraphQLJSON,
     Date: dateScalar,
     Query: {
       getProfileById: async (_: undefined, args: any): Promise<object> => {
-        return {}
+        return {testing: 'getProfileById'}
       },
       getConversations: async (_: undefined, args: any): Promise<any[]> => {
-        return []
+        return [{testing: 'getConversations'}]
       },
       getMessage: async (_: undefined, args: any): Promise<any[]> => {
-        return []
+        return [{testing: 'getMessage'}]
       }
     },
     Mutation: {
@@ -46,3 +47,5 @@ export const resolvers = {
       }
     }
 }
+
+export default resolvers

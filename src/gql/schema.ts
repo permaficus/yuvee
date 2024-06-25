@@ -1,7 +1,7 @@
-export const typeDefs = `#graphql
+const typeDefs = `#graphql
     scalar JSON
     scalar Date
-
+    
     type User {
         id: ID
         email: String!
@@ -16,18 +16,18 @@ export const typeDefs = `#graphql
     type Message {
         id: ID
         text: String
-        timeStamp: Date
+        timestamp: Date
         messageStatus: String
     }
     type Query {
-        getProfileById (email: String, username: String): User
-        getConversations (email: String, username: String): [Conversations]
-        getMessage (cid: ID!): [Message]
+        getProfileById(email: String, username: String): User
+        getConversations(email: String, username: String): [Conversations]
+        getMessage(cid: ID!): [Message]
     }
     type Mutation {
-        sendMessage: (body: MessagePayload!)!: Message
-        register: (body: UserRegister!)!: User
-        login: (body: UserLogin!)!: User
+        sendMessage (body: MessagePayload): Message
+        register (body: UserRegister): User
+        login (body: UserLogin): User
     }
     input UserRegister {
         email: String!
@@ -41,10 +41,8 @@ export const typeDefs = `#graphql
     input MessagePayload {
         text: String!
         senderId: String!
-        timeStamp: Date!
-    }
-    enum Status {
-        read
-        unread
+        to: String!
     }
 `
+
+export default typeDefs

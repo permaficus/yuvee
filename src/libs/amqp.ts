@@ -83,10 +83,4 @@ class RabbitInstance extends EventEmitter {
     }
 }
 
-const RabbitMQ = () => {
-    return new RabbitInstance();
-}
-
-export {
-    RabbitMQ
-}
+export { RabbitInstance, DEFAULT_EXCHANGE, MESSAGE_BROKER_SERVICE }

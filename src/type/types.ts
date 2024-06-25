@@ -8,7 +8,7 @@ export interface BrokerExchangeInterface {
 }
 
 export interface QueueTypeInterface {
-    name: string | undefined | null
+    name: string | undefined | null,
     channel: any,
     options?: {
         durable: boolean,
@@ -18,4 +18,20 @@ export interface QueueTypeInterface {
             'x-dead-letter-routing-key'?: string | string[] | null
         }
     }
+}
+export interface UserDataType {
+    email: string
+    username: string
+    password: string
+}
+export interface UserLoginType {
+    email?: string
+    username?: string
+    password: string
+}
+export interface SendingMessageArguments {
+    queue: string
+    routingKey: string
+    message: string
+    from?: string
 }
