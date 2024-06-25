@@ -3,18 +3,18 @@ const typeDefs = `#graphql
     scalar Date
     
     type User {
-        id: ID
+        userId: String
         email: String!
         username: String
         password: String!
     }
     type Conversations {
-        id: ID
+        id: String
         initiatorId: String!
         recipientId: String!
     }
     type Message {
-        id: ID
+        id: String
         text: String
         timestamp: Date
         messageStatus: String
@@ -31,6 +31,7 @@ const typeDefs = `#graphql
     }
     input UserRegister {
         email: String!
+        username: String
         password: String!
     }
     input UserLogin {
@@ -40,7 +41,7 @@ const typeDefs = `#graphql
     }
     input MessagePayload {
         text: String!
-        senderId: String!
+        from: String!
         to: String!
     }
 `

@@ -29,9 +29,9 @@ model Users {
 
 model Conversation {
   id              String    @id @default(auto()) @map("_id") @db.ObjectId
-  initiatorId     String    @unique
+  initiatorId     String    
   initator        Users     @relation(name: "initiator", fields: [initiatorId], references: [username])
-  recipientId     String    @unique
+  recipientId     String    
   recipient       Users     @relation(name: "recipient", fields: [recipientId], references: [username])
   messages        Message[]
 }
@@ -40,7 +40,7 @@ model Message {
   id              String       @id @default(auto()) @map("_id") @db.ObjectId
   cid             String       @db.ObjectId
   conversation    Conversation @relation(fields: [cid], references: [id])
-  senderId        String       @unique
+  senderId        String       
   sender          Users        @relation(fields: [senderId], references: [username])
   text            String       @db.String
   timestamp       DateTime     @default(now())
