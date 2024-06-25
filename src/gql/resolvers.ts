@@ -1,8 +1,12 @@
 import GraphQLJSON from "graphql-type-json";
 import { GraphQLScalarType, Kind } from "graphql";
-import { storingMessages, sendText } from "@/worker";
-import { registerUser } from "@/worker/storing";
-import { fetchAllConversations, fetchAllMessages } from "@/worker/query";
+import { 
+  storingMessages, 
+  sendText,
+  fetchAllConversations,
+  fetchAllMessages,
+  registerUser
+} from "@/worker";
 
 const dateScalar = new GraphQLScalarType({
     name: 'Date',
@@ -47,7 +51,7 @@ const resolvers = {
       register: async (_: undefined, args: any): Promise<any> => {
         return await registerUser({...args.body})
       },
-      sendMessage: async (_: undefined, args: any): Promise<void> => {
+      sendMessage: async (_: undefined, args: any): Promise<any> => {
         // sending message
         const { cid, text } = await storingMessages({...args.body});
         await sendText({
@@ -56,7 +60,8 @@ const resolvers = {
           message: text,
           from: args.body.from,
           token: cid
-        })
+        });
+        return `Sent`
       }
     }
 }
