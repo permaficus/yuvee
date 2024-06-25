@@ -1,10 +1,14 @@
 import { RabbitInstance, DEFAULT_EXCHANGE, MESSAGE_BROKER_SERVICE } from "@/libs/amqp";
-import { SendingMessageArguments } from "@/type/types";
+import { MessageArguments } from "@/type/types";
 import chalk from "chalk";
 
 export const sendText = async (
-    args: SendingMessageArguments
+    args: MessageArguments
 ): Promise<void> => {
+    const headers = {
+        reply_to: args.from,
+        token: args.token
+    }
     const rbmq = new RabbitInstance();
     rbmq.connect();
     rbmq.on('connected', async (EventListener) => {
@@ -13,7 +17,7 @@ export const sendText = async (
         const targetRoutingKey = args.routingKey;
         const exchange = await rbmq.initiateExchange({
             name: DEFAULT_EXCHANGE,
-            type: `topics`,
+            type: `topic`,
             durable: true,
             autoDelete: false,
             internal: false,
@@ -31,7 +35,7 @@ export const sendText = async (
             }
         });
         await channel.bindQueue(targetQueue, exchange, targetRoutingKey);
-        await channel.publish(exchange, targetRoutingKey, Buffer.from(JSON.stringify(args.message)), { headers: { reply_to: args.from } });
+        await channel.publish(exchange, targetRoutingKey, Buffer.from(JSON.stringify(args.message)), { headers: headers });
         rbmq.setClosingState(true);
         await channel.close();
         await conn.close();

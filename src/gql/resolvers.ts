@@ -1,6 +1,7 @@
 import GraphQLJSON from "graphql-type-json";
 import { GraphQLScalarType, Kind } from "graphql";
-import { sendText } from "@/worker/publisher";
+import { storingMessages, sendText } from "@/worker";
+import { registerUser } from "@/worker/storing";
 
 const dateScalar = new GraphQLScalarType({
     name: 'Date',
@@ -42,8 +43,19 @@ const resolvers = {
       }
     },
     Mutation: {
+      register: async (_: undefined, args: any): Promise<any> => {
+        return await registerUser({...args.body})
+      },
       sendMessage: async (_: undefined, args: any): Promise<void> => {
         // sending message
+        const { cid, text } = await storingMessages({...args.body});
+        await sendText({
+          queue: `yuvee@${args.body.to}`,
+          routingKey: `*.to.${args.body.to}`,
+          message: text,
+          from: args.body.from,
+          token: cid
+        })
       }
     }
 }

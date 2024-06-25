@@ -1,7 +1,7 @@
 export interface BrokerExchangeInterface {
     channel: any
     name: string | undefined | null
-    type: 'direct' | 'fanout' | 'headers' | 'topics'
+    type: 'direct' | 'fanout' | 'headers' | 'topic'
     durable: boolean
     autoDelete?: boolean
     internal?: boolean
@@ -29,9 +29,17 @@ export interface UserLoginType {
     username?: string
     password: string
 }
+export interface MessageArguments {
+    [key: string]: string
+}
 export interface SendingMessageArguments {
     queue: string
     routingKey: string
     message: string
     from?: string
+}
+export interface StoringMessageArguments {
+    text: string
+    senderId: string
+    to: string
 }
