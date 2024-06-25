@@ -1,6 +1,34 @@
 import { DB, prismaErrHandler } from '@/libs/prisma';
-import { MessageArguments, UserDataType, UserLoginType } from '@/type/types';
+import { MessageArguments, QueryArguments, UserDataType, UserLoginType } from '@/type/types';
 
+export const getAllMessages = async (args: QueryArguments): Promise<object | undefined> => {
+    try {
+        return await DB.message.findMany({
+            where: {
+                cid: { equals: args.cid }
+            },
+            orderBy: {
+                timestamp: args.sort
+            }
+        })
+    } catch (error: unknown) {
+        prismaErrHandler(error)
+    }
+}
+export const getAllConversations = async (args: QueryArguments): Promise<object | undefined> => {
+    try {
+        return await DB.conversation.findMany({
+            where: {
+                OR: [
+                    { recipientId: { equals: args.username } },
+                    { initiatorId: { equals: args.username } }
+                ]
+            }
+        })
+    } catch (error: unknown) {
+        prismaErrHandler(error)
+    }
+}
 export const userRegister = async (body: UserDataType): Promise<object | undefined> => {
     try {
         return await DB.users.create({

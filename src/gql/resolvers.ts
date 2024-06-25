@@ -2,6 +2,7 @@ import GraphQLJSON from "graphql-type-json";
 import { GraphQLScalarType, Kind } from "graphql";
 import { storingMessages, sendText } from "@/worker";
 import { registerUser } from "@/worker/storing";
+import { fetchAllConversations, fetchAllMessages } from "@/worker/query";
 
 const dateScalar = new GraphQLScalarType({
     name: 'Date',
@@ -35,11 +36,11 @@ const resolvers = {
       getProfileById: async (_: undefined, args: any): Promise<object> => {
         return {testing: 'getProfileById'}
       },
-      getConversations: async (_: undefined, args: any): Promise<any[]> => {
-        return [{testing: 'getConversations'}]
+      getConversations: async (_: undefined, args: any): Promise<object | undefined> => {
+        return await fetchAllConversations({...args})
       },
-      getMessage: async (_: undefined, args: any): Promise<any[]> => {
-        return [{testing: 'getMessage'}]
+      getMessages: async (_: undefined, args: any): Promise<object | undefined> => {
+        return await fetchAllMessages({...args})
       }
     },
     Mutation: {
