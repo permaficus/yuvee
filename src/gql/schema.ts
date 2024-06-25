@@ -10,8 +10,8 @@ const typeDefs = `#graphql
     }
     type Conversations {
         id: String
-        initiatorId: String!
-        recipientId: String!
+        initiatorId: String
+        recipientId: String
     }
     type Message {
         id: String
@@ -21,8 +21,8 @@ const typeDefs = `#graphql
     }
     type Query {
         getProfileById(email: String, username: String): User
-        getConversations(email: String, username: String): [Conversations]
-        getMessage(cid: ID!): [Message]
+        getConversations(username: String): [Conversations]
+        getMessages(cid: String!): [Message]
     }
     type Mutation {
         sendMessage (body: MessagePayload): Message

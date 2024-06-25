@@ -29,8 +29,19 @@ export interface UserLoginType {
     username?: string
     password: string
 }
+export interface ConversationsData {
+    id: string,
+    initiatorId: string
+    recipientId: string
+}
 export interface MessageArguments {
     [key: string]: string
+}
+export interface QueryArguments {
+    cid?: string
+    sort?: 'asc' | 'desc'
+    email?: string
+    username?: string
 }
 export interface SendingMessageArguments {
     queue: string
