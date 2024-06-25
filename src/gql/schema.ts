@@ -25,7 +25,7 @@ const typeDefs = `#graphql
         getMessages(cid: String!): [Message]
     }
     type Mutation {
-        sendMessage (body: MessagePayload): Message
+        sendMessage (body: MessagePayload): String
         register (body: UserRegister): User
         login (body: UserLogin): User
     }
