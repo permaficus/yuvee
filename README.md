@@ -8,3 +8,8 @@
 
 
 A demo of a messenger app built with GraphQL, RabbitMQ, and MongoDB.
+
+### Disclaimer
+
+- ⚠️ The project is under **development**.
+- ⚠️ Expect bugs, breaking changes and lot of ****.
