@@ -1,5 +1,24 @@
 import { DB, prismaErrHandler } from '@/libs/prisma';
-import { MessageArguments, QueryArguments, UserDataType, UserLoginType } from '@/type/types';
+import { MessageArguments, QueryArguments, UserDataType, ConversationsData } from '@/type/types';
+
+const filter = (data: ConversationsData[], username: string): ConversationsData[] => {
+    return data.map(obj => {
+        // Create a new partial object of type ConversationsData to store filtered properties.
+        const filteredObj: Partial<ConversationsData> = {};
+        Object.keys(obj).forEach(key => {
+            // If the value of the current property is not equal to the username, add it to the filtered object.
+            if (obj[key as keyof ConversationsData] !== username) {
+                filteredObj[key as keyof ConversationsData] = obj[key as keyof ConversationsData];
+                if (['initiatorId', 'recipientId'].includes(key)) {
+                    filteredObj['username'] = filteredObj[key]
+                    delete filteredObj[key]
+                }
+            }
+        });
+        // Return the filtered object, casting it back to ConversationsData type.
+        return filteredObj as ConversationsData;
+    });
+}
 
 export const getProfileById = async (args: QueryArguments): Promise<object | undefined> => {
     try {
@@ -31,14 +50,15 @@ export const getAllMessages = async (args: QueryArguments): Promise<object | und
 }
 export const getAllConversations = async (args: QueryArguments): Promise<object | undefined> => {
     try {
-        return await DB.conversation.findMany({
+        const _list = await DB.conversation.findMany({
             where: {
                 OR: [
                     { recipientId: { equals: args.username } },
                     { initiatorId: { equals: args.username } }
                 ]
             }
-        })
+        });
+        return filter(_list, args.username)
     } catch (error: unknown) {
         prismaErrHandler(error)
     }

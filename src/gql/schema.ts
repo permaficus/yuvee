@@ -9,8 +9,7 @@ const typeDefs = `#graphql
     }
     type Conversations {
         id: String
-        initiatorId: String
-        recipientId: String
+        username: String
     }
     type Message {
         id: String
