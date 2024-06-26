@@ -15,7 +15,6 @@ class PrismaError extends Error {
     }
 }
 export const prismaErrHandler = (error: any) => {
-    console.log(error)
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
         const { meta, code, message } = error;
         // @ts-ignore
