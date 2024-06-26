@@ -3,10 +3,9 @@ const typeDefs = `#graphql
     scalar Date
     
     type User {
-        userId: String
+        userId: String!
         email: String!
-        username: String
-        password: String!
+        username: String!
     }
     type Conversations {
         id: String
@@ -20,7 +19,7 @@ const typeDefs = `#graphql
         messageStatus: String
     }
     type Query {
-        getProfileById(email: String, username: String): User
+        getProfileById(username: String): User
         getConversations(username: String): [Conversations]
         getMessages(cid: String!): [Message]
     }
