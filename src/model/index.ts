@@ -1,6 +1,20 @@
 import { DB, prismaErrHandler } from '@/libs/prisma';
 import { MessageArguments, QueryArguments, UserDataType, UserLoginType } from '@/type/types';
 
+export const getProfileById = async (args: QueryArguments): Promise<object | undefined> => {
+    try {
+        return await DB.users.findFirst({
+            where: {
+                username: { equals: args.username }
+            },
+            omit: {
+                password: true
+            }
+        })
+    } catch (error: unknown) {
+        prismaErrHandler(error)
+    }
+}
 export const getAllMessages = async (args: QueryArguments): Promise<object | undefined> => {
     try {
         return await DB.message.findMany({
@@ -41,10 +55,12 @@ export const userRegister = async (body: UserDataType): Promise<object | undefin
         prismaErrHandler(error)
     }
 }
-export const storeConversation = async (body: MessageArguments ): Promise<any> => {
+export const storeConversation = async (body: MessageArguments ): Promise<{cid: string, text: string}> => {
     try {
         return await DB.$transaction(async (model) => {
             let currentId: string = null
+            // first we need to check if the user has already participate in a conversation
+            // if exist we use the ID to continue using the broker queue
             const getCid = await model.conversation.findFirst({
                 where: {
                     OR: [
@@ -67,7 +83,7 @@ export const storeConversation = async (body: MessageArguments ): Promise<any> =
                 }
             });
             if (!getCid) {
-                // storing conversation
+                // storing the conversation data into model
                 const result = await model.conversation.create({
                     data: {
                          initiatorId: body.senderId,
