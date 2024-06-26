@@ -5,7 +5,8 @@ import {
   sendText,
   fetchAllConversations,
   fetchAllMessages,
-  registerUser
+  registerUser,
+  fetchUserProfile
 } from "@/worker";
 
 const dateScalar = new GraphQLScalarType({
@@ -37,8 +38,8 @@ const resolvers = {
     JSON: GraphQLJSON,
     Date: dateScalar,
     Query: {
-      getProfileById: async (_: undefined, args: any): Promise<object> => {
-        return {testing: 'getProfileById'}
+      getProfileById: async (_: undefined, args: any): Promise<object | undefined> => {
+        return await fetchUserProfile({...args})
       },
       getConversations: async (_: undefined, args: any): Promise<object | undefined> => {
         return await fetchAllConversations({...args})
