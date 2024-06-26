@@ -21,6 +21,9 @@ export const prismaErrHandler = (error: any) => {
         if (code === 'P2010' && /(kind\: I\/O error)|(connection refused)/gi.test(meta?.message)) {
             throw new PrismaError('We have trouble connecting to our database server, Please try again later', 500);
         }
+        if (code === 'P2002') {
+            throw new PrismaError('Error: Duplicate or missing required data. Please review your request.', 400)
+        }
         // @ts-ignore
         throw new PrismaError(meta?.cause || message, 400);
     }
