@@ -1,4 +1,12 @@
 import { sendText } from "./publisher";
-import { storingMessages } from "./storing";
+import { storingMessages, registerUser } from "./storing";
+import { fetchAllConversations, fetchAllMessages, fetchUserProfile } from "./query";
 
-export { sendText, storingMessages }
+export { 
+    sendText, 
+    storingMessages, 
+    registerUser, 
+    fetchAllConversations, 
+    fetchAllMessages, 
+    fetchUserProfile
+}
