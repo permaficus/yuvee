@@ -1,4 +1,4 @@
-import { getAllConversations, getAllMessages } from "@/model";
+import { getAllConversations, getAllMessages, getProfileById } from "@/model";
 import { ConversationsData, QueryArguments } from "@/type/types";
 
 const filter = (data: ConversationsData[], username: string): ConversationsData[] => {
@@ -15,7 +15,11 @@ const filter = (data: ConversationsData[], username: string): ConversationsData[
         return filteredObj as ConversationsData;
     });
 }
-
+export const fetchUserProfile = async (args: QueryArguments): Promise<object | undefined> => {
+    return await getProfileById({
+        ...args
+    })
+}
 export const fetchAllMessages = async (args: QueryArguments): Promise<object | undefined> => {
     return await getAllMessages({
         ...args
@@ -27,5 +31,4 @@ export const fetchAllConversations = async (args: QueryArguments): Promise<objec
     })
     // @ts-expect-error
     return filter(conversationList, args.username)
-    
 }
