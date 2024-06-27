@@ -6,6 +6,7 @@ const typeDefs = `#graphql
         userId: String!
         email: String!
         username: String!
+        avatar: String
     }
     type Conversations {
         id: String
@@ -25,7 +26,7 @@ const typeDefs = `#graphql
     type Mutation {
         sendMessage (body: MessagePayload): String
         register (body: UserRegister): User
-        login (body: UserLogin): User
+        login (body: UserLogin): String
     }
     input UserRegister {
         email: String!
@@ -33,7 +34,6 @@ const typeDefs = `#graphql
         password: String!
     }
     input UserLogin {
-        email: String
         username: String
         password: String!
     }
