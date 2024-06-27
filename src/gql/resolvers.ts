@@ -8,6 +8,8 @@ import {
   registerUser,
   fetchUserProfile
 } from "@/worker";
+import { MessageArguments, UserDataType } from "@/type/types";
+import { userLogin } from "@/worker/query";
 
 const dateScalar = new GraphQLScalarType({
     name: 'Date',
@@ -38,21 +40,23 @@ const resolvers = {
     JSON: GraphQLJSON,
     Date: dateScalar,
     Query: {
-      getProfileById: async (_: undefined, args: any): Promise<object | undefined> => {
+      getProfileById: async (_: undefined, args: object): Promise<object | undefined> => {
         return await fetchUserProfile({...args})
       },
-      getConversations: async (_: undefined, args: any): Promise<object | undefined> => {
+      getConversations: async (_: undefined, args: object): Promise<object | undefined> => {
         return await fetchAllConversations({...args})
       },
-      getMessages: async (_: undefined, args: any): Promise<object | undefined> => {
+      getMessages: async (_: undefined, args: object): Promise<object | undefined> => {
         return await fetchAllMessages({...args})
       }
     },
     Mutation: {
-      register: async (_: undefined, args: any): Promise<any> => {
+      register: async (_: undefined, args: { body: UserDataType }): Promise<object | undefined> => {
         return await registerUser({...args.body})
       },
-      sendMessage: async (_: undefined, args: any): Promise<any> => {
+      // using another way to invoke the worker at gql mutation
+      login: userLogin,
+      sendMessage: async (_: undefined, args: { body: MessageArguments }): Promise<string> => {
         // sending message
         const { cid, text } = await storingMessages({...args.body});
         await sendText({

@@ -42,7 +42,9 @@ const serverInit = async (): Promise<void> => {
         express.json(),
         // expressMiddleware accepts the same arguments:
         // an Apollo Server instance and optional configuration options
-        expressMiddleware(server),
+        expressMiddleware(server, {
+            context: async ({ req }) => ({ headers: req.headers, params: req.params, query: req.query })
+        }),
     );
 }
 
