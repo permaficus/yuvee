@@ -23,6 +23,7 @@ export interface UserDataType {
     email: string
     username: string
     password: string
+    avatar?: string
 }
 export interface UserLoginType {
     email?: string
