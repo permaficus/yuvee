@@ -19,7 +19,22 @@ const filter = (data: ConversationsData[], username: string): ConversationsData[
         return filteredObj as ConversationsData;
     });
 }
-
+export const getUserPassword = async (username: string): Promise<{password: string}> => {
+    try {
+        return await DB.users.findFirst({
+            where: {
+                username: {
+                    equals: username
+                }
+            },
+            select: {
+                password: true
+            }
+        })
+    } catch (error: unknown) {
+        prismaErrHandler(error)
+    }
+}
 export const getProfileById = async (args: QueryArguments): Promise<object | undefined> => {
     try {
         return await DB.users.findFirst({
