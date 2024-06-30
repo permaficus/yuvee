@@ -12,7 +12,7 @@
   "description": "",
   "dependencies": {
     "@apollo/server": "^4.10.4",
-    "@prisma/client": "^5.16.0",
+    "@prisma/client": "^5.16.1",
     "amqplib": "^0.10.4",
     "bcryptjs": "^2.4.3",
     "chalk": "^4.1.2",
@@ -29,7 +29,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
     "enmav": "^0.7.12",
-    "prisma": "^5.16.0",
+    "prisma": "^5.16.1",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.10"
   },
