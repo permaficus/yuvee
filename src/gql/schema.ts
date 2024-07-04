@@ -18,6 +18,10 @@ const typeDefs = `#graphql
         timestamp: Date
         messageStatus: String
     }
+    type LoginResponse {
+        status: String
+        token: String
+    }
     type Query {
         getProfileById(username: String): User
         getConversations(username: String): [Conversations]
@@ -26,7 +30,7 @@ const typeDefs = `#graphql
     type Mutation {
         sendMessage (body: MessagePayload): String
         register (body: UserRegister): User
-        login (body: UserLogin): String
+        login (body: UserLogin): LoginResponse
     }
     input UserRegister {
         email: String!
